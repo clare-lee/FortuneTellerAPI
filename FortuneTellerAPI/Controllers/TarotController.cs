@@ -45,7 +45,7 @@ namespace FortuneTellerAPI.Controllers
             // Add reading to Log
             Log log = new Log()
             {
-                Readings = string.Join(", ",Reading.Select(card => card.UpMeaning)),
+                Readings = string.Join(", ",Reading.Select(card => generator.Next(0,100) < 50 ? card.UpMeaning:card.DownMeaning)),
                 Name = name,
                 Date = DateTime.Now,
                 LuckyNumbers = string.Empty,
@@ -79,6 +79,62 @@ namespace FortuneTellerAPI.Controllers
             }
 
             return tarot;
+        }
+
+        // GET: api/Tarot/Love
+        [HttpGet("Love/{name}")]
+        public async Task<ActionResult<Log>> GetLove(string name)
+        {
+            // Generate three random cards for a TarotReading
+            Random generator = new Random();
+            List<Tarot> Cards = await _context.Tarot.ToListAsync();
+
+            Tarot Love = (Cards[generator.Next(0, Cards.Count)]);
+
+            if (Love == null)
+            {
+                return NotFound();
+            }
+
+            // Add reading to Log
+            Log log = new Log()
+            {
+                Readings = Love.Love,
+                Name = name,
+                Date = DateTime.Now,
+                LuckyNumbers = string.Empty,
+                Type = "Love",
+                Tarots = null
+            };
+            return log;
+        }
+
+        // GET: api/Tarot/YesNo
+        [HttpGet("YesNo/{name}")]
+        public async Task<ActionResult<Log>> GetYesNo(string name)
+        {
+            // Generate three random cards for a TarotReading
+            Random generator = new Random();
+            List<Tarot> Cards = await _context.Tarot.ToListAsync();
+
+            Tarot YesNo = (Cards[generator.Next(0, Cards.Count)]);
+
+            if (YesNo == null)
+            {
+                return NotFound();
+            }
+
+            // Add reading to Log
+            Log log = new Log()
+            {
+                Readings = YesNo.YesNo,
+                Name = name,
+                Date = DateTime.Now,
+                LuckyNumbers = string.Empty,
+                Type = "YesNo",
+                Tarots = null
+            };
+            return log;
         }
 
         // PUT: api/Tarot/5
