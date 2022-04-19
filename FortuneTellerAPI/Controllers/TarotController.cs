@@ -28,7 +28,7 @@ namespace FortuneTellerAPI.Controllers
             return await _context.Tarot.ToListAsync();
         }
 
-        // GET: api/TarotReading
+        // GET: api/Tarot/name
         [HttpGet("{name}")]
         public async Task<ActionResult<Object>> GetTarotReading(string name)
         {
@@ -48,16 +48,13 @@ namespace FortuneTellerAPI.Controllers
                 Readings = string.Join(", ",Reading.Select(card => generator.Next(0,100) < 50 ? card.UpMeaning:card.DownMeaning)),
                 Name = name,
                 Date = DateTime.Now,
-                LuckyNumbers = string.Empty,
                 Type = "Tarot",
-                Tarots = Reading
+                Tarots = Reading,
+                Teas = null
             };
             _context.Log.Add(log);
             _context.SaveChanges();
-            //log.Tarots = log.Tarots.Select(card => {
-            //    card.Logs = null;
-            //    return card;
-            //}).ToList();
+
 
             return new
             {
@@ -81,11 +78,11 @@ namespace FortuneTellerAPI.Controllers
             return tarot;
         }
 
-        // GET: api/Tarot/Love
+        // GET: api/Tarot/Love/name
         [HttpGet("Love/{name}")]
         public async Task<ActionResult<Log>> GetLove(string name)
         {
-            // Generate three random cards for a TarotReading
+            // Generate random card's love reading
             Random generator = new Random();
             List<Tarot> Cards = await _context.Tarot.ToListAsync();
 
@@ -102,14 +99,14 @@ namespace FortuneTellerAPI.Controllers
                 Readings = Love.Love,
                 Name = name,
                 Date = DateTime.Now,
-                LuckyNumbers = string.Empty,
                 Type = "Love",
-                Tarots = null
+                Tarots = null,
+                Teas = null
             };
             return log;
         }
 
-        // GET: api/Tarot/YesNo
+        // GET: api/Tarot/YesNo/name
         [HttpGet("YesNo/{name}")]
         public async Task<ActionResult<Log>> GetYesNo(string name)
         {
@@ -130,9 +127,9 @@ namespace FortuneTellerAPI.Controllers
                 Readings = YesNo.YesNo,
                 Name = name,
                 Date = DateTime.Now,
-                LuckyNumbers = string.Empty,
                 Type = "YesNo",
-                Tarots = null
+                Tarots = null,
+                Teas = null
             };
             return log;
         }

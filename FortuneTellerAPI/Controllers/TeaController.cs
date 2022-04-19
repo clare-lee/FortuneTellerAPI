@@ -42,11 +42,11 @@ namespace FortuneTellerAPI.Controllers
             return tea;
         }
 
-        // GET: api/TeaReading
+        // GET: api/Tea/name
         [HttpGet("{name}")]
         public async Task<ActionResult<Log>> TeaReading(string name)
         {
-            // Generate three random cards for a TarotReading
+            // Generate random tea reading
             Random generator = new Random();
             List<Tea> Teas = await _context.Tea.ToListAsync();
 
@@ -63,7 +63,6 @@ namespace FortuneTellerAPI.Controllers
                 Readings = Reading.Description,
                 Name = name,
                 Date = DateTime.Now,
-                LuckyNumbers = string.Empty,
                 Type = "Tea Reading",
                 Tarots = null
             };
