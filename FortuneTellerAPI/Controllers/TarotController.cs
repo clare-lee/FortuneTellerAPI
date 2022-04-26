@@ -30,12 +30,14 @@ namespace FortuneTellerAPI.Controllers
 
         // GET: api/Tarot/name
         [HttpGet("{name}")]
-        public async Task<ActionResult<Object>> GetTarotReading(string name)
+        public async Task<ActionResult<Response<Object>>> GetTarotReading(string name)
         {
             // Generate three random cards for a TarotReading
             List<Tarot> Cards = await _context.Tarot.ToListAsync();
             List<Tarot> Reading = new List<Tarot>();
             Random generator = new Random();
+
+
             for (int i=0; i<3; i++)
             {
                 Reading.Add(Cards[generator.Next(0, Cards.Count)]);
@@ -56,33 +58,48 @@ namespace FortuneTellerAPI.Controllers
             _context.SaveChanges();
 
 
-            return new
+            return new Response<Object>()
             {
-                Readings = log.Readings,
-                Date = log.Date,
-                Tarots = log.Tarots.Select(card => card.Name)
+                items = new
+                {
+                    Readings = log.Readings,
+                    Date = log.Date,
+                    Tarots = log.Tarots.Select(card => card.Name)
+                },
+                statusCode=200,
+                statusDescription="Success"
             };
         }
 
         // GET: api/Tarot/5
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Tarot>> GetTarot(int id)
+        public async Task<ActionResult<Response<Tarot>>> GetTarot(int id)
         {
             var tarot = await _context.Tarot.FindAsync(id);
 
             if (tarot == null)
             {
-                return NotFound();
+                return new Response<Tarot>()
+                {
+                    items = tarot,
+                    statusCode = 404,
+                    statusDescription = "Tarot Card Not Found"
+                };
             }
 
-            return tarot;
+            return new Response<Tarot>()
+            {
+                items = tarot,
+                statusCode=200,
+                statusDescription="Success"
+            };
         }
 
         // GET: api/Tarot/Love/name
         [HttpGet("Love/{name}")]
-        public async Task<ActionResult<Log>> GetLove(string name)
+        public async Task<ActionResult<Response<Tarot>>> GetLove(string name)
         {
-            // Generate random card's love reading
+            // Generate random card for love reading
             Random generator = new Random();
             List<Tarot> Cards = await _context.Tarot.ToListAsync();
 
@@ -90,7 +107,12 @@ namespace FortuneTellerAPI.Controllers
 
             if (Love == null)
             {
-                return NotFound();
+                return new Response<Tarot>()
+                {
+                    items = Love,
+                    statusCode = 404,
+                    statusDescription = "Tarot Card Not Found"
+                };
             }
 
             // Add reading to Log
@@ -103,12 +125,18 @@ namespace FortuneTellerAPI.Controllers
                 Tarots = null,
                 Teas = null
             };
-            return log;
+
+            return new Response<Tarot>()
+            {
+                items = Love,
+                statusCode = 200,
+                statusDescription = "Success"
+            };
         }
 
         // GET: api/Tarot/YesNo/name
         [HttpGet("YesNo/{name}")]
-        public async Task<ActionResult<Log>> GetYesNo(string name)
+        public async Task<ActionResult<Response<Tarot>>> GetYesNo(string name)
         {
             // Generate three random cards for a TarotReading
             Random generator = new Random();
@@ -118,7 +146,12 @@ namespace FortuneTellerAPI.Controllers
 
             if (YesNo == null)
             {
-                return NotFound();
+                return new Response<Tarot>()
+                {
+                    items = YesNo,
+                    statusCode = 404,
+                    statusDescription = "Tarot Card Not Found"
+                };
             }
 
             // Add reading to Log
@@ -131,17 +164,27 @@ namespace FortuneTellerAPI.Controllers
                 Tarots = null,
                 Teas = null
             };
-            return log;
+            return new Response<Tarot>()
+            {
+                items = YesNo,
+                statusCode = 200,
+                statusDescription = "Success"
+            }; ;
         }
 
         // PUT: api/Tarot/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTarot(int id, Tarot tarot)
+        public async Task<Response<IActionResult>> PutTarot(int id, Tarot tarot)
         {
             if (id != tarot.ID)
             {
-                return BadRequest();
+                return new Response<IActionResult>()
+                {
+                    items = NotFound(), 
+                    statusCode = 404,
+                    statusDescription = "Tarot Card Not Found"
+                };
             }
 
             _context.Entry(tarot).State = EntityState.Modified;
@@ -154,7 +197,12 @@ namespace FortuneTellerAPI.Controllers
             {
                 if (!TarotExists(id))
                 {
-                    return NotFound();
+                    return new Response<IActionResult>()
+                    {
+                        items = NotFound(),
+                        statusCode = 404,
+                        statusDescription = "Tarot Card Not Found"
+                    };
                 }
                 else
                 {
@@ -162,34 +210,54 @@ namespace FortuneTellerAPI.Controllers
                 }
             }
 
-            return NoContent();
+            return new Response<IActionResult>()
+            {
+                items = NoContent(),
+                statusCode = 200,
+                statusDescription = "Success"
+            };
         }
 
         // POST: api/Tarot
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Tarot>> PostTarot(Tarot tarot)
+        public async Task<ActionResult<Response<IActionResult>>> PostTarot(Tarot tarot)
         {
             _context.Tarot.Add(tarot);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTarot", new { id = tarot.ID }, tarot);
+            return new Response<IActionResult>()
+            {
+                items = CreatedAtAction("GetTarot", new { id = tarot.ID }, tarot),
+                statusCode = 200,
+                statusDescription = "Success"
+            }; 
         }
 
         // DELETE: api/Tarot/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTarot(int id)
+        public async Task<Response<IActionResult>> DeleteTarot(int id)
         {
             var tarot = await _context.Tarot.FindAsync(id);
             if (tarot == null)
             {
-                return NotFound();
+                return new Response<IActionResult>()
+                {
+                    items = NotFound(),
+                    statusCode = 404,
+                    statusDescription = "Tarot Card Not Found"
+                };
             }
 
             _context.Tarot.Remove(tarot);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return new Response<IActionResult>()
+            {
+                items = NotFound(),
+                statusCode = 404,
+                statusDescription = "Tarot Card Not Found"
+            };
         }
 
         private bool TarotExists(int id)

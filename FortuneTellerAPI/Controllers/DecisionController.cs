@@ -17,14 +17,19 @@ namespace FortuneTellerAPI.Controllers
 
         // GET: api/Decision
         [HttpGet]
-        public ActionResult<string> GetDecision()
+        public ActionResult<Response<string>> GetDecision()
         {
-            return "Please use one of the decision making sfd";
+            return new Response<string>()
+            {
+                items ="Please use one of the decision helpers: Magic8Ball, MagicH8Ball, Lucky, CoinFlip, Pick(Needs the use of Postman)",
+                statusCode = 200,
+                statusDescription = "Success"
+            };
         }
 
         // GET: api/Decision/Magic8Ball
         [HttpGet("Magic8Ball/")]
-        public ActionResult<string> GetMagic8Ball()
+        public ActionResult<Response<string>> GetMagic8Ball()
         {
             string[] answers = new string[]
             {
@@ -50,12 +55,17 @@ namespace FortuneTellerAPI.Controllers
                 "Very Doubtful"
             };
             Random generator = new Random();
-            return answers[generator.Next() % answers.Length];
+            return new Response<string>()
+            {
+                items = answers[generator.Next() % answers.Length],
+                statusCode = 200,
+                statusDescription = "Success"
+            };
         }
 
         // GET: api/Decision/Magic8Ball
         [HttpGet("MagicH8Ball/")]
-        public ActionResult<string> GetMagicH8Ball()
+        public ActionResult<Response<string>> GetMagicH8Ball()
         {
             string[] answers = new string[]
             {
@@ -73,7 +83,7 @@ namespace FortuneTellerAPI.Controllers
                 "You're impossible to underestimate.",
                 "Bless your heart",
                 "So you're, like, really pretty.",
-                "Oh my God, I love your bracelet.  Where did you get it?",
+                "Oh my God, I love your bracelet. Where did you get it?",
                 "You're kinda like Rapunzel except instead of letting down your hair you let down everyone in your life.",
                 "I know a mind reader who would charge you half price.",
                 "I hope you go far. The sooner, the better.",
@@ -86,12 +96,18 @@ namespace FortuneTellerAPI.Controllers
                 "I fart in your general direction."
             };
             Random generator = new Random();
-            return answers[generator.Next() % answers.Length];
+            return new Response<string>()
+            {
+                items = answers[generator.Next() % answers.Length],
+                statusCode = 200,
+                statusDescription = "Success"
+            };
+            
         }
 
         // GET: api/Decision/Lucky
         [HttpGet("Lucky/")]
-        public ActionResult<string> GetLucky()
+        public ActionResult<Response<string>> GetLucky()
         {
             // five numbers from 1-70 and 1 number from 1-25
             Random generator = new Random();
@@ -102,12 +118,17 @@ namespace FortuneTellerAPI.Controllers
             }
             Lucky.Add(generator.Next(1, 26));
 
-            return string.Join(", ", Lucky);
+            return new Response<string>()
+            {
+                items = string.Join(", ", Lucky),
+                statusCode = 200,
+                statusDescription = "Success"
+            };
         }
 
         // GET: api/Decision/CoinFlip
         [HttpGet("CoinFlip/")]
-        public ActionResult<string> GetCoinFlip()
+        public ActionResult<Response<string>> GetCoinFlip()
         {
             string[] Coin = new string[]
             {
@@ -116,16 +137,26 @@ namespace FortuneTellerAPI.Controllers
             };
 
             Random generator = new Random();
-            return Coin[generator.Next() % Coin.Length];
+            return new Response<string>()
+            {
+                items = Coin[generator.Next() % Coin.Length],
+                statusCode = 200,
+                statusDescription = "Success"
+            };
         }
 
-        // POST: api/Decision/CoinFlip
+        // POST: api/Decision/Pick
         [HttpPost("Pick/")]
-        public ActionResult<string> PostPick(string[] answers )
+        public ActionResult<Response<string>> PostPick(string[] answers )
         {
 
             Random generator = new Random();
-            return answers[generator.Next() % answers.Length];
+            return new Response<string>()
+            {
+                items = answers[generator.Next() % answers.Length],
+                statusCode = 200,
+                statusDescription = "Success"
+            };
         }
     }
 }

@@ -30,21 +30,31 @@ namespace FortuneTellerAPI.Controllers
 
         // GET: api/Tea/5
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Tea>> GetTea(int id)
+        public async Task<ActionResult<Response<Tea>>> GetTea(int id)
         {
             var tea = await _context.Tea.FindAsync(id);
 
             if (tea == null)
             {
-                return NotFound();
+                return new Response<Tea>()
+                {
+                    items = tea,
+                    statusCode = 404,
+                    statusDescription = "Tarot Card Not Found"
+                };
             }
 
-            return tea;
+            return new Response<Tea>()
+            {
+                items = tea,
+                statusCode = 200,
+                statusDescription = "Success"
+            };
         }
 
         // GET: api/Tea/name
         [HttpGet("{name}")]
-        public async Task<ActionResult<Log>> TeaReading(string name)
+        public async Task<ActionResult<Response<Object>>> TeaReading(string name)
         {
             // Generate random tea reading
             Random generator = new Random();
@@ -54,7 +64,12 @@ namespace FortuneTellerAPI.Controllers
 
             if (Teas == null)
             {
-                return NotFound();
+                return new Response<Object>()
+                {
+                    items = Reading,
+                    statusCode = 404,
+                    statusDescription = "Tea Card Not Found"
+                };
             }
 
             // Add reading to Log
@@ -66,17 +81,32 @@ namespace FortuneTellerAPI.Controllers
                 Type = "Tea Reading",
                 Tarots = null
             };
-            return log;
+            return new Response<Object>()
+            {
+                items = new
+                {
+                    Readings = log.Readings,
+                    Date = log.Date
+                },
+                statusCode = 200,
+                statusDescription = "Success"
+            };
+           
         }
 
         // PUT: api/Tea/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTea(int id, Tea tea)
+        public async Task<Response<IActionResult>> PutTea(int id, Tea tea)
         {
             if (id != tea.ID)
             {
-                return BadRequest();
+                return new Response<IActionResult>()
+                {
+                    items = NotFound(),
+                    statusCode = 404,
+                    statusDescription = "Tea Card Not Found"
+                };
             }
 
             _context.Entry(tea).State = EntityState.Modified;
@@ -89,7 +119,12 @@ namespace FortuneTellerAPI.Controllers
             {
                 if (!TeaExists(id))
                 {
-                    return NotFound();
+                    return new Response<IActionResult>()
+                    {
+                        items = NotFound(),
+                        statusCode = 404,
+                        statusDescription = "Tea Card Not Found"
+                    };
                 }
                 else
                 {
@@ -97,34 +132,53 @@ namespace FortuneTellerAPI.Controllers
                 }
             }
 
-            return NoContent();
+            return new Response<IActionResult>()
+            {
+                items = NoContent(),
+                statusCode = 200,
+                statusDescription = "Success"
+            };
         }
 
         // POST: api/Tea
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Tea>> PostTea(Tea tea)
+        public async Task<ActionResult<Response<IActionResult>>> PostTea(Tea tea)
         {
             _context.Tea.Add(tea);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTea", new { id = tea.ID }, tea);
+            return new Response<IActionResult>()
+            {
+                items = CreatedAtAction("GetTea", new { id = tea.ID }, tea),
+                statusCode = 200,
+                statusDescription = "Success"
+            };
+           
         }
 
         // DELETE: api/Tea/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTea(int id)
+        public async Task<Response<IActionResult>> DeleteTea(int id)
         {
             var tea = await _context.Tea.FindAsync(id);
-            if (tea == null)
+
+            return new Response<IActionResult>()
             {
-                return NotFound();
-            }
+                items = NotFound(),
+                statusCode = 404,
+                statusDescription = "Tea Not Found"
+            };
 
             _context.Tea.Remove(tea);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return new Response<IActionResult>()
+            {
+                items = NotFound(),
+                statusCode = 404,
+                statusDescription = "Tea Not Found"
+            };
         }
 
         private bool TeaExists(int id)
