@@ -1,4 +1,4 @@
-#nullable disable
+﻿#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -136,7 +136,7 @@ namespace FortuneTellerAPI.Controllers
 
         // GET: api/Tarot/YesNo/name
         [HttpGet("YesNo/{name}")]
-        public async Task<ActionResult<Response<Tarot>>> GetYesNo(string name)
+        public async Task<ActionResult<Response<string>>> GetYesNo(string name)
         {
             // Generate three random cards for a TarotReading
             Random generator = new Random();
@@ -146,9 +146,9 @@ namespace FortuneTellerAPI.Controllers
 
             if (YesNo == null)
             {
-                return new Response<Tarot>()
+                return new Response<string>()
                 {
-                    items = YesNo,
+                    items = null,
                     statusCode = 404,
                     statusDescription = "Tarot Card Not Found"
                 };
@@ -164,9 +164,9 @@ namespace FortuneTellerAPI.Controllers
                 Tarots = null,
                 Teas = null
             };
-            return new Response<Tarot>()
+            return new Response<string>()
             {
-                items = YesNo,
+                items = YesNo.YesNo,
                 statusCode = 200,
                 statusDescription = "Success"
             }; ;
