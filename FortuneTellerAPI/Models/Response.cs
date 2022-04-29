@@ -1,7 +1,7 @@
 ﻿using System;
 namespace FortuneTellerAPI.Models
 {
-	public class Response<T>
+	public class Response<T> where T : class 
 	{
 		public int statusCode
 		{
@@ -14,12 +14,18 @@ namespace FortuneTellerAPI.Models
 			get;
 			set;
         }
-		public T items
+		public T? items
 		{
 			get;
 			set;
 		}
 
+		public Response()
+        {
+			statusCode = 0;
+			statusDescription = String.Empty;
+			items = default;
+        }
 	}
 }
 

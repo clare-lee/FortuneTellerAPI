@@ -12,22 +12,22 @@ namespace FortuneTellerAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DecisionController : ControllerBase
+    public class LuckController : ControllerBase
     {
 
-        // GET: api/Decision
+        // GET: api/Luck
         [HttpGet]
-        public ActionResult<Response<string>> GetDecision()
+        public ActionResult<Response<string>> GetLuck()
         {
             return new Response<string>()
             {
-                items ="Please use one of the decision helpers: Magic8Ball, MagicH8Ball, Lucky, CoinFlip, Pick(Needs the use of Postman)",
+                items = "Please use one of the Luck tasks: Magic8Ball, MagicH8Ball, Lucky, CoinFlip, Pick(Needs the use of Postman)",
                 statusCode = 200,
                 statusDescription = "Success"
             };
         }
 
-        // GET: api/Decision/Magic8Ball
+        // GET: api/Luck/Magic8Ball
         [HttpGet("Magic8Ball/")]
         public ActionResult<Response<string>> GetMagic8Ball()
         {
@@ -63,7 +63,7 @@ namespace FortuneTellerAPI.Controllers
             };
         }
 
-        // GET: api/Decision/Magic8Ball
+        // GET: api/Luck/Magic8Ball
         [HttpGet("MagicH8Ball/")]
         public ActionResult<Response<string>> GetMagicH8Ball()
         {
@@ -105,7 +105,7 @@ namespace FortuneTellerAPI.Controllers
             
         }
 
-        // GET: api/Decision/Lucky
+        // GET: api/Luck/Lucky
         [HttpGet("Lucky/")]
         public ActionResult<Response<string>> GetLucky()
         {
@@ -126,7 +126,7 @@ namespace FortuneTellerAPI.Controllers
             };
         }
 
-        // GET: api/Decision/CoinFlip
+        // GET: api/Luck/CoinFlip
         [HttpGet("CoinFlip/")]
         public ActionResult<Response<string>> GetCoinFlip()
         {
@@ -145,7 +145,7 @@ namespace FortuneTellerAPI.Controllers
             };
         }
 
-        // POST: api/Decision/Pick
+        // POST: api/Luck/Pick
         [HttpPost("Pick/")]
         public ActionResult<Response<string>> PostPick(string[] answers )
         {

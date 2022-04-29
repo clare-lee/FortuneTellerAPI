@@ -21,7 +21,7 @@ namespace FortuneTellerAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Tea/name
+        // GET: api/Log/name
         [HttpGet("{name}")]
         public async Task<ActionResult<Response<List<Log>>>> GetLog(string name)
         {

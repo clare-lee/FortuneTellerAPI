@@ -78,8 +78,9 @@ namespace FortuneTellerAPI.Controllers
                 Readings = Reading.Description,
                 Name = name,
                 Date = DateTime.Now,
-                Type = "Tea Reading",
-                Tarots = null
+                Type = "Tea",
+                Tarots = null,
+                Teas = new List<Tea>() { Reading }
             };
             return new Response<Object>()
             {
@@ -163,21 +164,23 @@ namespace FortuneTellerAPI.Controllers
         {
             var tea = await _context.Tea.FindAsync(id);
 
+            if ( tea == null) { 
             return new Response<IActionResult>()
             {
                 items = NotFound(),
                 statusCode = 404,
                 statusDescription = "Tea Not Found"
             };
+            }
 
             _context.Tea.Remove(tea);
             await _context.SaveChangesAsync();
 
             return new Response<IActionResult>()
             {
-                items = NotFound(),
-                statusCode = 404,
-                statusDescription = "Tea Not Found"
+                items = null,
+                statusCode = 200,
+                statusDescription = "Tea Was Removed"
             };
         }
 

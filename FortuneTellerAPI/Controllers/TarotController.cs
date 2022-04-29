@@ -97,7 +97,7 @@ namespace FortuneTellerAPI.Controllers
 
         // GET: api/Tarot/Love/name
         [HttpGet("Love/{name}")]
-        public async Task<ActionResult<Response<Tarot>>> GetLove(string name)
+        public async Task<ActionResult<Response<string>>> GetLove(string name)
         {
             // Generate random card for love reading
             Random generator = new Random();
@@ -107,9 +107,9 @@ namespace FortuneTellerAPI.Controllers
 
             if (Love == null)
             {
-                return new Response<Tarot>()
+                return new Response<string>()
                 {
-                    items = Love,
+                    items = null,
                     statusCode = 404,
                     statusDescription = "Tarot Card Not Found"
                 };
@@ -126,9 +126,9 @@ namespace FortuneTellerAPI.Controllers
                 Teas = null
             };
 
-            return new Response<Tarot>()
+            return new Response<string>()
             {
-                items = Love,
+                items = Love.Love,
                 statusCode = 200,
                 statusDescription = "Success"
             };
