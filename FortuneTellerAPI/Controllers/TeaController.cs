@@ -1,4 +1,4 @@
-#nullable disable
+﻿#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +40,7 @@ namespace FortuneTellerAPI.Controllers
                 {
                     items = tea,
                     statusCode = 404,
-                    statusDescription = "Tarot Card Not Found"
+                    statusDescription = "Tea Not Found"
                 };
             }
 
@@ -68,7 +68,7 @@ namespace FortuneTellerAPI.Controllers
                 {
                     items = Reading,
                     statusCode = 404,
-                    statusDescription = "Tea Card Not Found"
+                    statusDescription = "Tea Not Found"
                 };
             }
 
@@ -82,6 +82,9 @@ namespace FortuneTellerAPI.Controllers
                 Tarots = null,
                 Teas = new List<Tea>() { Reading }
             };
+            _context.Log.Add(log);
+            _context.SaveChanges();
+
             return new Response<Object>()
             {
                 items = new
@@ -106,7 +109,7 @@ namespace FortuneTellerAPI.Controllers
                 {
                     items = NotFound(),
                     statusCode = 404,
-                    statusDescription = "Tea Card Not Found"
+                    statusDescription = "Tea Not Found"
                 };
             }
 
@@ -124,7 +127,7 @@ namespace FortuneTellerAPI.Controllers
                     {
                         items = NotFound(),
                         statusCode = 404,
-                        statusDescription = "Tea Card Not Found"
+                        statusDescription = "Tea Not Found"
                     };
                 }
                 else

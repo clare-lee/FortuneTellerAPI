@@ -125,6 +125,8 @@ namespace FortuneTellerAPI.Controllers
                 Tarots = null,
                 Teas = null
             };
+            _context.Log.Add(log);
+            _context.SaveChanges();
 
             return new Response<string>()
             {
@@ -164,6 +166,9 @@ namespace FortuneTellerAPI.Controllers
                 Tarots = null,
                 Teas = null
             };
+            _context.Log.Add(log);
+            _context.SaveChanges();
+
             return new Response<string>()
             {
                 items = YesNo.YesNo,
@@ -172,93 +177,93 @@ namespace FortuneTellerAPI.Controllers
             }; ;
         }
 
-        // PUT: api/Tarot/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<Response<IActionResult>> PutTarot(int id, Tarot tarot)
-        {
-            if (id != tarot.ID)
-            {
-                return new Response<IActionResult>()
-                {
-                    items = NotFound(), 
-                    statusCode = 404,
-                    statusDescription = "Tarot Card Not Found"
-                };
-            }
+        //// PUT: api/Tarot/5
+        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //[HttpPut("{id}")]
+        //public async Task<Response<IActionResult>> PutTarot(int id, Tarot tarot)
+        //{
+        //    if (id != tarot.ID)
+        //    {
+        //        return new Response<IActionResult>()
+        //        {
+        //            items = NotFound(), 
+        //            statusCode = 404,
+        //            statusDescription = "Tarot Card Not Found"
+        //        };
+        //    }
 
-            _context.Entry(tarot).State = EntityState.Modified;
+        //    _context.Entry(tarot).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TarotExists(id))
-                {
-                    return new Response<IActionResult>()
-                    {
-                        items = NotFound(),
-                        statusCode = 404,
-                        statusDescription = "Tarot Card Not Found"
-                    };
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!TarotExists(id))
+        //        {
+        //            return new Response<IActionResult>()
+        //            {
+        //                items = NotFound(),
+        //                statusCode = 404,
+        //                statusDescription = "Tarot Card Not Found"
+        //            };
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return new Response<IActionResult>()
-            {
-                items = NoContent(),
-                statusCode = 200,
-                statusDescription = "Success"
-            };
-        }
+        //    return new Response<IActionResult>()
+        //    {
+        //        items = NoContent(),
+        //        statusCode = 200,
+        //        statusDescription = "Success"
+        //    };
+        //}
 
-        // POST: api/Tarot
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Response<IActionResult>>> PostTarot(Tarot tarot)
-        {
-            _context.Tarot.Add(tarot);
-            await _context.SaveChangesAsync();
+        //// POST: api/Tarot
+        
+        //[HttpPost]
+        //public async Task<ActionResult<Response<IActionResult>>> PostTarot(Tarot tarot)
+        //{
+        //    _context.Tarot.Add(tarot);
+        //    await _context.SaveChangesAsync();
 
-            return new Response<IActionResult>()
-            {
-                items = CreatedAtAction("GetTarot", new { id = tarot.ID }, tarot),
-                statusCode = 200,
-                statusDescription = "Success"
-            }; 
-        }
+        //    return new Response<IActionResult>()
+        //    {
+        //        items = CreatedAtAction("GetTarot", new { id = tarot.ID }, tarot),
+        //        statusCode = 200,
+        //        statusDescription = "Success"
+        //    }; 
+        //}
 
-        // DELETE: api/Tarot/5
-        [HttpDelete("{id}")]
-        public async Task<Response<IActionResult>> DeleteTarot(int id)
-        {
-            var tarot = await _context.Tarot.FindAsync(id);
-            if (tarot == null)
-            {
-                return new Response<IActionResult>()
-                {
-                    items = NotFound(),
-                    statusCode = 404,
-                    statusDescription = "Tarot Card Not Found"
-                };
-            }
+        //// DELETE: api/Tarot/5
+        //[HttpDelete("{id}")]
+        //public async Task<Response<IActionResult>> DeleteTarot(int id)
+        //{
+        //    var tarot = await _context.Tarot.FindAsync(id);
+        //    if (tarot == null)
+        //    {
+        //        return new Response<IActionResult>()
+        //        {
+        //            items = NotFound(),
+        //            statusCode = 404,
+        //            statusDescription = "Tarot Card Not Found"
+        //        };
+        //    }
 
-            _context.Tarot.Remove(tarot);
-            await _context.SaveChangesAsync();
+        //    _context.Tarot.Remove(tarot);
+        //    await _context.SaveChangesAsync();
 
-            return new Response<IActionResult>()
-            {
-                items = NotFound(),
-                statusCode = 404,
-                statusDescription = "Tarot Card Not Found"
-            };
-        }
+        //    return new Response<IActionResult>()
+        //    {
+        //        items = NotFound(),
+        //        statusCode = 404,
+        //        statusDescription = "Tarot Card Not Found"
+        //    };
+        //}
 
         private bool TarotExists(int id)
         {
