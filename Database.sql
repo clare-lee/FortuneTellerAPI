@@ -35,12 +35,12 @@ CREATE TABLE `LogTarot` (
   CONSTRAINT `Tarot_ID` FOREIGN KEY (`TarotsID`) REFERENCES `Tarot` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 CREATE TABLE `LogTea` (
-  `LogID` int NOT NULL,
-  `TeaID` int NOT NULL,
-  PRIMARY KEY (`LogID`,`TeaID`),
-  KEY `Tea_ID_idx` (`TeaID`),
-  CONSTRAINT `LogTea_ID` FOREIGN KEY (`LogID`) REFERENCES `Log` (`ID`),
-  CONSTRAINT `Tea_ID` FOREIGN KEY (`TeaID`) REFERENCES `Tea` (`ID`)
+  `LogsID` int NOT NULL,
+  `TeasID` int NOT NULL,
+  PRIMARY KEY (`LogsID`,`TeasID`),
+  KEY `Tea_ID_idx` (`TeasID`),
+  CONSTRAINT `LogTea_ID` FOREIGN KEY (`LogsID`) REFERENCES `Log` (`ID`),
+  CONSTRAINT `Tea_ID` FOREIGN KEY (`TeasID`) REFERENCES `Tea` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
