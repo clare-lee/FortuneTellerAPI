@@ -1,16 +1,6 @@
 # Fortune Teller API
 
-Changes to the original API Idea:
-- Additional Luck feature 
-   - Magic 8 Ball
-   - Magic H8 Ball  
-   - Lucky Numbers moved to luck feature
-   - Coin Flip
-   - Random Picker
-- Removed log for lucky Numbers
-
 This is a comprehensive fortune teller divided into tarot based readings, tea readings, and general luck based divinations.
-
 
 Allows GET, POST, PUT, and DELETE. 
 
